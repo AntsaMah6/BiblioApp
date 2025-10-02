@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des membres</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/lists.css">
+    <link rel="stylesheet" href="/assets/css/search.css">
+</head>
+<body>
+    <nav class="navbar">
+        <h1>Bibliothèque - Membres</h1>
+        <div class="nav-links">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/livre/list">Livres</a>
+            <a href="/emprunt/list">Emprunts</a>
+            <a href="/logout">Déconnexion</a>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div class="list-header">
+            <h1>Liste des membres</h1>
+            <a href="/membre/insert" class="btn btn-primary">Ajouter un membre</a>
+        </div>
+
+        <div class="search-bar">
+            <div class="form-group">
+                <input type="text" id="search-input" placeholder="Rechercher un membre par nom ou prénom..." 
+                       class="search-input">
+            </div>
+        </div>
+        
+        <!-- Structure corrigée du carrousel -->
+        <div class="carousel" id="membres-carousel">
+            <div class="carousel-items" id="membres-container">
+                {{ list_membre }}
+            </div>
+        </div>
+        
+        <!-- Message aucun résultat en dehors du carrousel -->
+        <div id="no-results" class="no-results-message" style="display: none;">
+            Aucun membre trouvé pour votre recherche.
+        </div>
+    </div>
+
+    <script src="/assets/js/carousel.js"></script>
+    <script src="/assets/js/membre.js"></script>
+    <script src="/assets/js/membre_search.js"></script>
+</body>
+</html>

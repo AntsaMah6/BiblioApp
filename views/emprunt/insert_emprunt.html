@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Nouvel emprunt</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/forms.css">
+    <link rel="stylesheet" href="/assets/css/autocomplete.css">
+</head>
+<body>
+    <nav class="navbar">
+        <h1>Bibliothèque - Nouvel emprunt</h1>
+        <div class="nav-links">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/emprunt/list">Liste Emprunts</a>
+            <a href="/logout">Déconnexion</a>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div class="form-container">
+            <h1>Nouvel emprunt</h1>
+            <!-- <div class="info-message">
+                <strong>Information :</strong> 
+                <ul>
+                    <li>Chaque membre peut emprunter jusqu'à 3 livres simultanément</li>
+                    <li>Vous pouvez sélectionner plusieurs livres en une seule fois</li>
+                    <li>Les membres ayant déjà 3 emprunts ne peuvent pas emprunter de nouveaux livres</li>
+                </ul>
+            </div> -->
+            
+            <!-- {% if error %}
+            <div class="error-message">
+                {{ error }}
+            </div>
+            {% endif %} -->
+            
+            <form method="post" action="/emprunt/emprunter" id="emprunt-form">
+                <input type="hidden" name="id_membre" id="id_membre" required>
+                <div id="livres-ids-container"></div>
+                
+                <div class="form-group">
+                    <label for="search_membre">Rechercher un membre</label>
+                    <div class="autocomplete">
+                        <input type="text" id="search_membre" placeholder="Commencez à taper le nom..." class="search-input" autocomplete="off">
+                        <div id="membre-autocomplete-list" class="autocomplete-items"></div>
+                    </div>
+                    <div id="selected-membre" class="selected-item hidden">
+                        <strong>Membre sélectionné:</strong> <span id="membre-nom"></span> <span id="membre-prenom"></span> (<span id="membre-email"></span>)
+                        <span id="membre-emprunts"></span>
+                        <button type="button" onclick="clearSelection('membre')" class="clear-btn">×</button>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="search_livre">Rechercher des livres</label>
+                    <div class="autocomplete">
+                        <input type="text" id="search_livre" placeholder="Commencez à taper le titre..." class="search-input" autocomplete="off">
+                        <div id="livre-autocomplete-list" class="autocomplete-items"></div>
+                    </div>
+                    <div id="selected-livres" class="selected-items-container">
+                        <strong>Livres sélectionnés:</strong>
+                        <div id="livres-list" class="livres-list"></div>
+                        <div class="livres-count">
+                            <span id="livres-count">0</span>/3 livres sélectionnés
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <a href="/emprunt/list" class="btn">Retour</a>
+                    <input type="submit" value="Emprunter les livres sélectionnés" class="btn btn-primary" id="submit-btn" disabled>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="/assets/js/autocomplete.js"></script>
+</body>
+</html>

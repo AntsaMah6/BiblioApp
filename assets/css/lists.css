@@ -1,0 +1,224 @@
+/* Header de liste */
+.list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.list-header h1 {
+    color: #2d3e50;
+}
+
+/* Carrousel */
+.carousel {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+    overflow: hidden;
+}
+
+.carousel-items {
+    padding: 1.5rem;
+    min-height: 400px;
+}
+
+.carousel-item {
+    display: none;
+    animation: fadeIn 0.5s ease-in;
+}
+
+.carousel-item.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Grid des éléments */
+.items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.item-card {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    padding: 1.5rem;
+    transition: transform 0.3s, box-shadow 0.3s;
+    margin-bottom: 2rem;
+}
+
+.item-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.item-card h3 {
+    color: #1976d2;
+    margin-bottom: 0.5rem;
+}
+
+.item-card p {
+    margin-bottom: 0.5rem;
+    color: #666;
+}
+
+.item-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e9ecef;
+}
+
+/* Navigation carrousel */
+.carousel-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+}
+
+.carousel-info {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.carousel-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Table pour les listes simples */
+.items-table {
+    width: 100%;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+    overflow: hidden;
+}
+
+.table-header {
+    background: #f8f9fa;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #e9ecef;
+    font-weight: 600;
+    color: #2d3e50;
+}
+
+.table-content {
+    padding: 0;
+}
+
+.table-row {
+    display: flex;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #e9ecef;
+    align-items: center;
+}
+
+.table-row:last-child {
+    border-bottom: none;
+}
+
+.table-row:hover {
+    background: #f8f9fa;
+}
+
+.table-cell {
+    flex: 1;
+    padding: 0 0.5rem;
+}
+
+.table-actions {
+    flex: 0 0 150px;
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+
+/* Styles pour les emprunts groupés */
+.grouped-emprunt {
+    border-left: 4px solid #3498db;
+}
+
+.membre-header {
+    background: #f8f9fa;
+    padding: 15px;
+    margin: -15px -15px 15px -15px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.membre-header h3 {
+    margin: 0;
+    color: #2c3e50;
+}
+
+.membre-header .email {
+    color: #7f8c8d;
+    font-size: 0.9em;
+}
+
+.emprunt-details {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 15px;
+}
+
+.livres-section {
+    flex: 2;
+}
+
+.dates-section {
+    flex: 1;
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.livres-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.livres-list li {
+    padding: 8px 12px;
+    margin-bottom: 5px;
+    background: #f8f9fa;
+    border-radius: 4px;
+    border-left: 3px solid #3498db;
+}
+
+.grouped-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: flex-start;
+}
+
+.grouped-actions .btn-retour {
+    font-size: 0.85em;
+    padding: 6px 12px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .emprunt-details {
+        flex-direction: column;
+    }
+    
+    .livres-list {
+        max-height: 120px;
+    }
+}
+

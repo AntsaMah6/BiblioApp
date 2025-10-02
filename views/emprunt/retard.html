@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Emprunts en retard</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/lists.css">
+</head>
+<body>
+    <nav class="navbar">
+        <h1>Bibliothèque - Retards</h1>
+        <div class="nav-links">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/livre/list">Livres</a>
+            <a href="/membre/list">Membres</a>
+            <a href="/emprunt/list">Emprunts</a>
+            <a href="/logout">Déconnexion</a>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div class="list-header">
+            <h1>Emprunts en retard</h1>
+        </div>
+        
+        <!-- {% if list_retards %} -->
+        <div class="carousel" id="retards-carousel">
+            <div class="carousel-items">
+                <!-- {{ list_retards }} -->
+            </div>
+        </div>
+        <!-- {% else %} -->
+        <div class="stat-card">
+            <h3 style="text-align: center; color: green;">Aucun retard !</h3>
+            <p style="text-align: center;">Tous les livres ont été retournés à temps.</p>
+        </div>
+        <!-- {% endif %} -->
+    </div>
+
+    <script src="/assets/js/carousel.js"></script>
+    <script src="/assets/js/emprunt.js"></script>
+</body>
+</html>

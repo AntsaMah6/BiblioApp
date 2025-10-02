@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Connexion</title>
+    <link rel="stylesheet" href="/assets/css/login.css">
+</head>
+<body>
+    <div class="login-container">
+        <h1>Connexion</h1>
+        <!-- {{ error }} -->
+        <form method="post" action="/login">
+            <label for="username">Nom d'utilisateur</label>
+            <input type="text" name="username" required><br>
+            <label for="password">Mot de passe</label>
+            <input type="password" name="password" required><br>
+            <input type="submit" value="Se connecter">
+        </form>
+    </div>
+</body>
+</html>

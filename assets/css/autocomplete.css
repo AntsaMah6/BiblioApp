@@ -1,0 +1,265 @@
+/* Styles pour l'autocomplétion */
+.autocomplete {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.autocomplete-items {
+    position: absolute;
+    border: 1px solid #d4d4d4;
+    border-bottom: none;
+    border-top: none;
+    z-index: 99;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    max-height: 200px;
+    overflow-y: auto;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-radius: 0 0 4px 4px;
+}
+
+.autocomplete-items div {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #d4d4d4;
+    transition: background-color 0.2s;
+}
+
+.autocomplete-items div:hover {
+    background-color: #e9e9e9;
+}
+
+.autocomplete-active {
+    background-color: #1976d2 !important;
+    color: white;
+}
+
+/* Éléments sélectionnés */
+.selected-item {
+    background: #e8f4fd;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 4px;
+    border: 1px solid #1976d2;
+    position: relative;
+}
+
+.selected-item strong {
+    color: #1976d2;
+}
+
+.clear-btn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #dc3545;
+    color: white;
+    border: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1;
+}
+
+.clear-btn:hover {
+    background: #c82333;
+}
+
+/* Champs de recherche */
+.search-input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #cfd8dc;
+    border-radius: 4px;
+    font-size: 1rem;
+    background: #f9fafb;
+    transition: border 0.3s;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #1976d2;
+    background: white;
+}
+
+/* Messages d'erreur */
+.error-message {
+    color: #dc3545;
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    background: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 4px;
+}
+
+/* État caché */
+.hidden {
+    display: none;
+}
+
+/* Désactivation du bouton */
+#submit-btn:disabled {
+    background: #6c757d;
+    cursor: not-allowed;
+}
+
+#submit-btn:disabled:hover {
+    background: #6c757d;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .autocomplete-items {
+        max-height: 150px;
+    }
+    
+    .selected-item {
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+    
+    .clear-btn {
+        width: 20px;
+        height: 20px;
+        font-size: 12px;
+    }
+}
+
+/* Styles pour les membres avec emprunts max */
+.autocomplete-items div[style*="opacity: 0.6"] {
+    background-color: #f8f9fa !important;
+}
+
+.autocomplete-items div[style*="opacity: 0.6"]:hover {
+    background-color: #f8f9fa !important;
+    cursor: not-allowed !important;
+}
+
+/* Indicateur d'emprunts */
+.emprunts-count {
+    font-size: 0.8em;
+    margin-left: 5px;
+    padding: 2px 6px;
+    border-radius: 10px;
+}
+
+.emprunts-ok {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.emprunts-warning {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.emprunts-max {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+/* Message d'information */
+.info-message {
+    background: #d1ecf1;
+    border: 1px solid #bee5eb;
+    color: #0c5460;
+    padding: 0.75rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+/* Styles pour la sélection multiple */
+.selected-items-container {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 4px;
+    border: 1px solid #e9ecef;
+}
+
+.livres-list {
+    margin: 0.5rem 0;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.livre-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    margin: 0.25rem 0;
+    background: white;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+}
+
+.livre-info {
+    flex: 1;
+}
+
+.livre-actions {
+    margin-left: 1rem;
+}
+
+.remove-livre {
+    background: #dc3545;
+    color: white;
+    border: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1;
+}
+
+.remove-livre:hover {
+    background: #c82333;
+}
+
+.livres-count {
+    text-align: center;
+    font-weight: bold;
+    color: #1976d2;
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    background: #e8f4fd;
+    border-radius: 4px;
+}
+
+.livres-count.warning {
+    color: #dc3545;
+    background: #f8d7da;
+}
+
+/* Amélioration des éléments sélectionnés */
+.selected-item {
+    background: #e8f4fd;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 4px;
+    border: 1px solid #1976d2;
+    position: relative;
+}
+
+.selected-item strong {
+    color: #1976d2;
+}
+
+/* État désactivé */
+#submit-btn:disabled {
+    background: #6c757d;
+    cursor: not-allowed;
+}
+
+#submit-btn:disabled:hover {
+    background: #6c757d;
+}

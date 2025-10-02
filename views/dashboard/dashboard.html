@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/assets/css/dashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <h1>Dashboard Bibliothèque</h1>
+        <div class="nav-links">
+            <a href="/livre/list">Livres</a>
+            <a href="/membre/list">Membres</a>
+            <a href="/emprunt/list">Emprunts</a>
+            <a href="/emprunt/retards">Retards</a>
+            <a href="/logout">Déconnexion</a>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">{{ total_livres }}</div>
+                <div>Livres</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ total_membres }}</div>
+                <div>Membres</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ emprunts_actifs }}</div>
+                <div>Emprunts actifs</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="retards-count">{{ emprunts_retard }}</div>
+                <div>Retards</div>
+            </div>
+        </div>
+        
+        <div class="charts-grid">
+            <div class="chart-card">
+                <h3>Livres par Auteur</h3>
+                <canvas id="livresChart"></canvas>
+            </div>
+            <div class="chart-card">
+                <h3>Membres par Âge</h3>
+                <canvas id="membresChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script src="/assets/js/dashboard.js"></script>
+    <script>
+        // Gestion de la couleur des retards
+        document.addEventListener('DOMContentLoaded', function() {
+            const retardsCount = document.getElementById('retards-count');
+            if (parseInt(retardsCount.textContent) > 0) {
+                retardsCount.style.color = 'red';
+                retardsCount.style.fontWeight = 'bold';
+            }
+        });
+    </script>
+</body>
+</html>

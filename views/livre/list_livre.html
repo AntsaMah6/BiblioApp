@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des livres</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/lists.css">
+    <link rel="stylesheet" href="/assets/css/search.css">
+</head>
+<body>
+    <nav class="navbar">
+        <h1>Bibliothèque - Livres</h1>
+        <div class="nav-links">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/membre/list">Membres</a>
+            <a href="/emprunt/list">Emprunts</a>
+            <a href="/emprunt/retards">Retards</a>
+            <a href="/logout">Déconnexion</a>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div class="list-header">
+            <h1>Liste des livres</h1>
+            <a href="/livre/insert" class="btn btn-primary">Ajouter un livre</a>
+        </div>
+
+        <!-- Barre de recherche -->
+        <div class="search-bar">
+            <div class="form-group">
+                <input type="text" id="search-input" placeholder="Rechercher un livre par titre ou auteur..." 
+                       class="search-input">
+            </div>
+        </div>
+        
+        <div class="carousel" id="livres-carousel">
+            <div class="carousel-items" id="livres-container">
+                {{ list_livre }}
+            </div>
+            
+            <!-- Message quand aucun résultat -->
+            <div id="no-results" class="no-results-message">
+                Aucun livre trouvé pour votre recherche.
+            </div>
+        </div>
+    </div>
+
+    <script src="/assets/js/carousel.js"></script>
+    <script src="/assets/js/livre.js"></script>
+    <script src="/assets/js/livre_search.js"></script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Emprunts en cours</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/lists.css">
+</head>
+<body>
+    <nav class="navbar">
+        <h1>Bibliothèque - Emprunts</h1>
+        <div class="nav-links">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/livre/list">Livres</a>
+            <a href="/membre/list">Membres</a>
+            <a href="/emprunt/retards">Retards</a>
+            <a id="deco" href="/logout">Déconnexion</a>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div class="list-header">
+            <h1>Emprunts en cours</h1>
+            <a href="/emprunt/nouvel" class="btn btn-primary">Nouvel emprunt</a>
+        </div>
+        
+        <div class="carousel" id="emprunts-carousel">
+            <div class="carousel-items">
+                {{ list_emprunts }}
+            </div>
+        </div>
+    </div>
+
+    <script src="/assets/js/carousel.js"></script>
+    <script src="/assets/js/emprunt.js"></script>
+</body>
+</html>

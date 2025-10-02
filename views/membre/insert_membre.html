@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestion membre</title>
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/forms.css">
+</head>
+<body>
+    <nav class="navbar">
+        <h1>Bibliothèque - Gestion membre</h1>
+        <div class="nav-links">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/membre/list">Liste membres</a>
+            <a href="/logout">Déconnexion</a>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div class="form-container">
+            <h1>{{ form_title }}</h1>
+            <form method="post" action="{{ form_action }}">
+                <!-- {% if id_membre %}
+                <input type="hidden" name="id_membres" value="{{ id_membre }}">
+                {% endif %} -->
+                
+                <div class="form-group">
+                    <label for="nom">Nom</label>
+                    <input type="text" name="nom" id="nom" value="{{ nom }}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="prenom">Prénom</label>
+                    <input type="text" name="prenom" id="prenom" value="{{ prenom }}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="age">Âge</label>
+                    <input type="number" name="age" id="age" value="{{ age }}" required min="1" max="120">
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" name="email" id="email" value="{{ email }}" required>
+                </div>
+                
+                <div class="form-actions">
+                    <a href="/membre/list" class="btn">Retour</a>
+                    <input type="submit" value="{{ button_text }}" class="btn btn-primary">
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
