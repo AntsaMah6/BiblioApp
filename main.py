@@ -10,6 +10,7 @@ import time
 from session_manager import sessions, SESSION_TIMEOUT, is_session_valid, update_session_activity
 from controllers.dashboard import DashboardController
 from controllers.emprunt import EmpruntController
+from controllers.reservation import ReservationController
 
 router = Router()
 router.add("/", AuthController.login_page)
@@ -45,6 +46,13 @@ router.add("/emprunt/retards", EmpruntController.pageRetards)
 
 router.add("/api/livres/disponibles", LivreController.apiLivresDisponibles)
 router.add("/api/membres", MembreController.apiMembres)
+router.add("/api/livres/empruntes", LivreController.apiLivresEmpruntes)
+
+router.add("/reservation/list", ReservationController.pageList)
+router.add("/reservation/nouvel", ReservationController.pageNouvelleReservation)
+router.add("/reservation/reserver", ReservationController.opReserver)
+router.add("/reservation/honorer/\d+", ReservationController.opHonorer)
+router.add("/reservation/annuler/\d+", ReservationController.opAnnuler)
 
 
 

@@ -40,23 +40,26 @@ class Model(object):
     @classmethod
     def insert(cls, data):
         try:
-            base = cls._get_base()
+            base = Base()  # Correction : utiliser Base() directement au lieu de cls._get_base()
+            table = getattr(cls, "__table__", cls.__name__.lower())
             columns = ', '.join(data.keys())
             placeholders = ', '.join(['%s'] * len(data))
-            query = f"INSERT INTO {cls.__table__} ({columns}) VALUES ({placeholders})"
+            query = f"INSERT INTO {table} ({columns}) VALUES ({placeholders})"
             
-            print(f"DEBUG Model.insert - Query: {query}")  # Debug
-            print(f"DEBUG Model.insert - Values: {list(data.values())}")  # Debug
+            print(f"DEBUG Model.insert - Query: {query}")
+            print(f"DEBUG Model.insert - Values: {list(data.values())}")
             
             base.cur.execute(query, list(data.values()))
             base.con.commit()
             result = base.cur.lastrowid
             base.con.close()
             
-            print(f"DEBUG Model.insert - ID inséré: {result}")  # Debug
+            print(f"DEBUG Model.insert - ID inséré: {result}")
             return result
         except Exception as e:
-            print(f"ERREUR Model.insert: {e}")  # Debug
+            print(f"ERREUR Model.insert: {e}")
+            import traceback
+            traceback.print_exc()
             return False
 
     @classmethod

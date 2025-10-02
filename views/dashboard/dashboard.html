@@ -2,64 +2,133 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard</title>
+    <title>Dashboard - Bibliothèque</title>
     <link rel="stylesheet" href="/assets/css/dashboard.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <nav class="navbar">
-        <h1>Dashboard Bibliothèque</h1>
+        <h1>📊 Dashboard Bibliothèque</h1>
         <div class="nav-links">
-            <a href="/livre/list">Livres</a>
-            <a href="/membre/list">Membres</a>
-            <a href="/emprunt/list">Emprunts</a>
-            <a href="/emprunt/retards">Retards</a>
-            <a href="/logout">Déconnexion</a>
+            <a href="/livre/list">📚 Livres</a>
+            <a href="/membre/list">👥 Membres</a>
+            <a href="/emprunt/list">🔄 Emprunts</a>
+            <a href="/reservation/list">📋 Réservations</a>
+            <a href="/emprunt/retards">⚠️ Retards</a>
+            <a href="/logout">🚪 Déconnexion</a>
         </div>
     </nav>
     
     <div class="container">
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-number">{{ total_livres }}</div>
-                <div>Livres</div>
+        <!-- Section principale des statistiques -->
+        <div class="stats-main">
+            <div class="stats-grid">
+                <div class="stat-card primary">
+                    <div class="stat-number">{{ total_livres }}</div>
+                    <div class="stat-label">Total Livres</div>
+                </div>
+                <div class="stat-card info">
+                    <div class="stat-number">{{ total_membres }}</div>
+                    <div class="stat-label">Membres Actifs</div>
+                </div>
+                <div class="stat-card success">
+                    <div class="stat-number">{{ emprunts_actifs }}</div>
+                    <div class="stat-label">Emprunts Actifs</div>
+                </div>
+                <div class="stat-card success">
+                    <div class="stat-number">{{ livres_disponibles }}</div>
+                    <div class="stat-label">Livres Disponibles</div>
+                </div>
+                <div class="stat-card info">
+                    <div class="stat-number">{{ reservations_attente }}</div>
+                    <div class="stat-label">Réservations</div>
+                </div>
+                <div class="stat-card warning">
+                    <div class="stat-number" id="retards-count">{{ emprunts_retard }}</div>
+                    <div class="stat-label">Emprunts en Retard</div>
+                </div>
             </div>
-            <div class="stat-card">
-                <div class="stat-number">{{ total_membres }}</div>
-                <div>Membres</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">{{ emprunts_actifs }}</div>
-                <div>Emprunts actifs</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="retards-count">{{ emprunts_retard }}</div>
-                <div>Retards</div>
+            
+            <!-- Actions rapides -->
+            <div class="quick-actions">
+                <h3>🚀 Actions Rapides</h3>
+                <div class="action-buttons">
+                    <a href="/emprunt/nouvel" class="action-btn">
+                        <i class="fas fa-book"></i>
+                        <span>Nouvel Emprunt</span>
+                    </a>
+                    <a href="/livre/insert" class="action-btn">
+                        <i class="fas fa-plus"></i>
+                        <span>Ajouter un Livre</span>
+                    </a>
+                    <a href="/membre/insert" class="action-btn">
+                        <i class="fas fa-user-plus"></i>
+                        <span>Nouveau Membre</span>
+                    </a>
+                    <a href="/reservation/nouvel" class="action-btn">
+                        <i class="fas fa-calendar-plus"></i>
+                        <span>Nouvelle Réservation</span>
+                    </a>
+                </div>
             </div>
         </div>
         
-        <div class="charts-grid">
+        <!-- Section des graphiques -->
+        <div class="charts-section">
             <div class="chart-card">
-                <h3>Livres par Auteur</h3>
+                <h3>📈 Livres par Auteur</h3>
                 <canvas id="livresChart"></canvas>
             </div>
             <div class="chart-card">
-                <h3>Membres par Âge</h3>
+                <h3>👥 Répartition par Âge</h3>
                 <canvas id="membresChart"></canvas>
+            </div>
+            <div class="chart-card">
+                <h3>🔄 Statut des Emprunts</h3>
+                <canvas id="empruntsChart"></canvas>
+            </div>
+            <div class="chart-card">
+                <h3>📊 Taux d'Occupation</h3>
+                <div id="occupationChart">
+                    <div class="occupation-stats">
+                        <div class="occupation-item">
+                            <span class="occupation-label">Livres empruntés</span>
+                            <div class="occupation-bar">
+                                <div class="occupation-fill" id="empruntes-bar"></div>
+                            </div>
+                            <span class="occupation-percent" id="empruntes-percent">0%</span>
+                        </div>
+                        <div class="occupation-item">
+                            <span class="occupation-label">Livres disponibles</span>
+                            <div class="occupation-bar">
+                                <div class="occupation-fill available" id="disponibles-bar"></div>
+                            </div>
+                            <span class="occupation-percent" id="disponibles-percent">0%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Activité récente -->
+        <div class="recent-activity">
+            <h3>📋 Activité Récente</h3>
+            <div class="activity-list" id="activity-list">
+                <!-- Les activités seront chargées via JavaScript -->
+                <div class="activity-item">
+                    <div class="activity-icon primary">
+                        <i class="fas fa-sync-alt"></i>
+                    </div>
+                    <div class="activity-content">
+                        <div class="activity-title">Chargement des activités...</div>
+                        <div class="activity-time">En cours</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     <script src="/assets/js/dashboard.js"></script>
-    <script>
-        // Gestion de la couleur des retards
-        document.addEventListener('DOMContentLoaded', function() {
-            const retardsCount = document.getElementById('retards-count');
-            if (parseInt(retardsCount.textContent) > 0) {
-                retardsCount.style.color = 'red';
-                retardsCount.style.fontWeight = 'bold';
-            }
-        });
-    </script>
 </body>
 </html>

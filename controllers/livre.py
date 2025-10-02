@@ -1,5 +1,6 @@
 from models.livre import Livre
 import urllib.parse
+from models.reservation import Reservation
 import json
 
 class LivreController(object):
@@ -27,18 +28,44 @@ class LivreController(object):
 
     @staticmethod
     async def pageList(scope, receive, send):
+        
         livres = Livre.getAll()
         list_livre = ""
         
         for livre in livres:
+            # Vérifier si le livre est disponible
+            est_disponible = Livre.est_disponible(livre['id_livres'])
+            
+            # Récupérer le nombre de réservations pour ce livre
+            reservations = Reservation.get_reservations_par_livre(livre['id_livres'])
+            nb_reservations = len(reservations)
+            
+            # Déterminer l'affichage du statut
+            statut_html = ""
+            if est_disponible:
+                statut_html = "<span style='color: green;'>✓ Disponible</span>"
+            else:
+                if nb_reservations > 0:
+                    statut_html = f"<span style='color: orange;'>✗ Emprunté ({nb_reservations} réservation(s))</span>"
+                else:
+                    statut_html = "<span style='color: red;'>✗ Emprunté</span>"
+            
+            # Générer le bouton de réservation conditionnel
+            bouton_reservation = ""
+            if not est_disponible:
+                bouton_reservation = f'<a href="/reservation/nouvel?id_livre={livre["id_livres"]}" class="btn btn-warning">Réserver</a>'
+            
+            # CORRECTION : Utiliser des liens au lieu de boutons avec data-id
             list_livre += f"""
             <div class="carousel-item">
                 <div class="item-card">
                     <h3>{livre['titre']}</h3>
                     <p><strong>Auteur:</strong> {livre['auteur']}</p>
+                    <p><strong>Statut:</strong> {statut_html}</p>
                     <div class="item-actions">
                         <a href="/livre/update/{livre['id_livres']}" class="btn btn-primary">Modifier</a>
-                        <button class="btn btn-danger btn-suppr" data-id="{livre['id_livres']}">Supprimer</button>
+                        <a href="/livre/delete/{livre['id_livres']}" class="btn btn-danger">Supprimer</a>
+                        {bouton_reservation}
                     </div>
                 </div>
             </div>
@@ -192,4 +219,77 @@ class LivreController(object):
             await send({
                 'type': 'http.response.body',
                 'body': json.dumps({"error": "Erreur lors de la recherche"}).encode()
+            })
+
+    @staticmethod
+    async def apiLivresEmpruntes(scope, receive, send):
+        """API pour livres actuellement empruntés"""
+        try:
+            from models.base import Base
+            
+            print("DEBUG - API livres empruntés appelée")
+            
+            base = Base()
+            query = """
+                SELECT l.*, e.date_retour_prevue, e.date_emprunt, e.id_emprunts 
+                FROM livres l 
+                INNER JOIN emprunts e ON l.id_livres = e.id_livres 
+                WHERE e.statut = 'emprunté'
+                ORDER BY l.titre
+            """
+            base.cur.execute(query)
+            livres_empruntes = base.cur.fetchall()
+            base.con.close()
+            
+            print(f"DEBUG - {len(livres_empruntes)} livres empruntés trouvés via requête directe")
+            
+            # Formater les données pour inclure les informations d'emprunt
+            result = []
+            for livre in livres_empruntes:
+                # Convertir les dates en strings pour la sérialisation JSON
+                date_retour_prevue = livre['date_retour_prevue']
+                date_emprunt = livre['date_emprunt']
+                
+                # Si ce sont des objets date, les convertir en string
+                if hasattr(date_retour_prevue, 'strftime'):
+                    date_retour_prevue = date_retour_prevue.strftime('%Y-%m-%d')
+                if hasattr(date_emprunt, 'strftime'):
+                    date_emprunt = date_emprunt.strftime('%Y-%m-%d')
+                
+                result.append({
+                    'id_livres': livre['id_livres'],
+                    'titre': livre['titre'],
+                    'auteur': livre['auteur'],
+                    'emprunt': {
+                        'date_retour_prevue': date_retour_prevue,
+                        'date_emprunt': date_emprunt,
+                        'id_emprunts': livre['id_emprunts']
+                    }
+                })
+            
+            # CORRECTION : Envoyer d'abord le start, puis le body
+            await send({
+                'type': 'http.response.start',
+                'status': 200,
+                'headers': [(b'content-type', b'application/json')]
+            })
+            await send({
+                'type': 'http.response.body',
+                'body': json.dumps(result).encode()
+            })
+            
+        except Exception as e:
+            print(f"ERREUR apiLivresEmpruntes: {e}")
+            import traceback
+            traceback.print_exc()
+            
+            # CORRECTION : Envoyer d'abord le start, puis le body pour les erreurs aussi
+            await send({
+                'type': 'http.response.start',
+                'status': 500,
+                'headers': [(b'content-type', b'application/json')]
+            })
+            await send({
+                'type': 'http.response.body',
+                'body': json.dumps({"error": str(e)}).encode()
             })

@@ -1,4 +1,5 @@
 from models.model import Model
+from models.base import Base
 
 class Membre(Model):
     __table__ = "membres"
@@ -13,21 +14,23 @@ class Membre(Model):
     @classmethod
     def search(cls, search_term):
         """Recherche des membres par nom, prénom ou email"""
-        conn = cls.get_connection()
-        cursor = conn.cursor(dictionary=True)
-        
-        query = """
-            SELECT * FROM membres 
-            WHERE nom LIKE %s OR prenom LIKE %s OR email LIKE %s
-            ORDER BY nom, prenom
-        """
-        search_pattern = f"%{search_term}%"
-        cursor.execute(query, (search_pattern, search_pattern, search_pattern))
-        
-        results = cursor.fetchall()
-        cursor.close()
-        conn.close()
-        
-        return results
-    
-    
+        try:
+            # CORRECTION : Utiliser Base() au lieu de get_connection()
+            base = Base()
+            cursor = base.cur
+            
+            query = """
+                SELECT * FROM membres 
+                WHERE nom LIKE %s OR prenom LIKE %s OR email LIKE %s
+                ORDER BY nom, prenom
+            """
+            search_pattern = f"%{search_term}%"
+            cursor.execute(query, (search_pattern, search_pattern, search_pattern))
+            
+            results = cursor.fetchall()
+            base.con.close()
+            
+            return results
+        except Exception as e:
+            print(f"ERREUR Membre.search: {e}")
+            return []

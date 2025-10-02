@@ -11,10 +11,12 @@
     <nav class="navbar">
         <h1>Bibliothèque - Membres</h1>
         <div class="nav-links">
-            <a href="/dashboard">Dashboard</a>
-            <a href="/livre/list">Livres</a>
-            <a href="/emprunt/list">Emprunts</a>
-            <a href="/logout">Déconnexion</a>
+            <a href="/dashboard">📊 Dashboard</a>
+            <a href="/livre/list">📚 Livres</a>
+            <a href="/emprunt/list">🔄 Emprunts</a>
+            <a href="/reservation/list">📋 Réservations</a>
+            <a href="/emprunt/retards">⚠️ Retards</a>
+            <a href="/logout">🚪 Déconnexion</a>
         </div>
     </nav>
     
@@ -31,21 +33,37 @@
             </div>
         </div>
         
-        <!-- Structure corrigée du carrousel -->
-        <div class="carousel" id="membres-carousel">
-            <div class="carousel-items" id="membres-container">
-                {{ list_membre }}
+        <!-- Conteneur principal pour les résultats -->
+        <div id="search-results-container">
+            <!-- Structure du carrousel pour les résultats normaux -->
+            <div class="carousel" id="membres-carousel">
+                <div class="carousel-items" id="membres-container">
+                    {{ list_membre }}
+                </div>
+            </div>
+            
+            <!-- Message aucun résultat -->
+            <div id="no-results" class="no-results-message" style="display: none;">
+                Aucun membre trouvé pour votre recherche.
             </div>
         </div>
-        
-        <!-- Message aucun résultat en dehors du carrousel -->
-        <div id="no-results" class="no-results-message" style="display: none;">
-            Aucun membre trouvé pour votre recherche.
+    </div>
+
+    <!-- Ajoutez ce code AVANT la fermeture du body dans list_membre.html -->
+    <div id="confirmationModal" class="confirmation-modal">
+        <div class="confirmation-content">
+            <h3>Confirmation de suppression</h3>
+            <p id="confirmationMessage">Êtes-vous sûr de vouloir supprimer ce membre ?</p>
+            <div class="confirmation-buttons">
+                <button id="confirmAction" class="btn btn-confirm">Confirmer</button>
+                <button id="cancelAction" class="btn btn-cancel">Annuler</button>
+            </div>
         </div>
     </div>
 
     <script src="/assets/js/carousel.js"></script>
     <script src="/assets/js/membre.js"></script>
+    <script src="/assets/js/confirmation.js"></script>
     <script src="/assets/js/membre_search.js"></script>
 </body>
 </html>

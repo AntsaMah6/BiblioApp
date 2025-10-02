@@ -50,14 +50,12 @@ class Emprunt(Model):
 
     @classmethod
     def retourner_livre(cls, id_emprunt):
-        """Retourner un livre"""
+        """Retourner un livre et vérifier les réservations"""
         try:
             print(f"DEBUG - Début retourner_livre ID: {id_emprunt}")
             
             emprunt = cls.getById(id_emprunt)
             print(f"DEBUG - Emprunt trouvé: {emprunt}")
-            print(f"DEBUG - Type de date_retour_prevue: {type(emprunt['date_retour_prevue'])}")
-            print(f"DEBUG - Valeur de date_retour_prevue: {emprunt['date_retour_prevue']}")
             
             if not emprunt:
                 print("DEBUG - Emprunt non trouvé")
@@ -79,8 +77,14 @@ class Emprunt(Model):
             print(f"DEBUG - Résultat update: {result}")
             
             if result:
-                print("DEBUG - Retour réussi")
-                return True, f"Livre retourné. Pénalité: {penalite}€"
+                print("DEBUG - Retour réussi, vérification des réservations...")
+                
+                # Vérifier et honorer les réservations pour ce livre
+                from models.reservation import Reservation
+                success, message = Reservation.verifier_et_honorer_reservations(emprunt['id_livres'])
+                print(f"DEBUG - Résultat vérification réservations: {success} - {message}")
+                
+                return True, f"Livre retourné. Pénalité: {penalite}€. {message}"
             else:
                 print("DEBUG - Échec de l'update")
                 return False, "Erreur lors de la mise à jour"

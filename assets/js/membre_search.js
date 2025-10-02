@@ -2,14 +2,15 @@
 class MembreSearch {
     constructor() {
         this.searchInput = document.getElementById('search-input');
-        // Correction : utiliser l'ID du carrousel
-        this.membresContainer = document.getElementById('membres-carousel');
+        this.membresContainer = document.getElementById('search-results-container');
         this.noResults = document.getElementById('no-results');
+        this.originalCarousel = document.getElementById('membres-carousel');
         
         console.log('Éléments trouvés:', {
             searchInput: this.searchInput,
             membresContainer: this.membresContainer,
-            noResults: this.noResults
+            noResults: this.noResults,
+            originalCarousel: this.originalCarousel
         });
         
         if (!this.searchInput || !this.membresContainer) {
@@ -17,8 +18,7 @@ class MembreSearch {
             return;
         }
         
-        // Sauvegarder le contenu original du carrousel complet
-        this.originalItems = this.membresContainer.innerHTML;
+        this.originalContent = this.membresContainer.innerHTML;
         this.init();
     }
 
@@ -97,42 +97,41 @@ class MembreSearch {
         
         if (membres.length === 0) {
             this.noResults.style.display = 'block';
-            this.membresContainer.style.display = 'none';
+            this.originalCarousel.style.display = 'none';
             this.updateResultsCounter(0, searchTerm);
             return;
         }
 
         this.noResults.style.display = 'none';
-        this.membresContainer.style.display = 'block';
+        this.originalCarousel.style.display = 'none';
         
-        // Générer le HTML complet du carrousel avec les résultats
-        let itemsHTML = '';
+        let resultsHTML = '<div class="items-grid">';
+        
         membres.forEach(membre => {
-            itemsHTML += `
-            <div class="carousel-item active">
-                <div class="item-card">
-                    <h3>${this.highlightText(membre.nom + ' ' + membre.prenom, searchTerm)}</h3>
-                    <p><strong>Âge:</strong> ${membre.age} ans</p>
-                    <p><strong>Email:</strong> ${this.highlightText(membre.email, searchTerm)}</p>
-                    <div class="item-actions">
-                        <a href="/membre/update/${membre.id_membres}" class="btn btn-primary">Modifier</a>
-                        <button class="btn btn-danger btn-suppr" data-id="${membre.id_membres}">Supprimer</button>
-                    </div>
+            resultsHTML += `
+            <div class="item-card">
+                <h3>${this.highlightText(membre.nom + ' ' + membre.prenom, searchTerm)}</h3>
+                <p><strong>Âge:</strong> ${membre.age} ans</p>
+                <p><strong>Email:</strong> ${this.highlightText(membre.email, searchTerm)}</p>
+                <div class="item-actions">
+                    <a href="/membre/update/${membre.id_membres}" class="btn btn-primary">Modifier</a>
+                    <a href="/membre/delete/${membre.id_membres}" class="btn btn-danger">Supprimer</a>
                 </div>
             </div>
             `;
         });
         
-        // Reconstruire le carrousel complet avec les résultats
-        const carouselHTML = `
-            <div class="carousel-items">
-                ${itemsHTML}
+        resultsHTML += '</div>';
+        
+        this.membresContainer.innerHTML = `
+            ${resultsHTML}
+            <div id="no-results" class="no-results-message" style="display: none;">
+                Aucun membre trouvé pour votre recherche.
             </div>
         `;
         
-        this.membresContainer.innerHTML = carouselHTML;
         this.updateResultsCounter(membres.length, searchTerm);
-        this.reattachEventListeners();
+        // Plus besoin de reattacherEventListeners car confirmation.js gère tout
     }
 
     highlightText(text, searchTerm) {
@@ -164,15 +163,13 @@ class MembreSearch {
     }
 
     showAllResults() {
-        this.membresContainer.innerHTML = this.originalItems;
+        this.membresContainer.innerHTML = this.originalContent;
         this.noResults.style.display = 'none';
-        this.membresContainer.style.display = 'block';
+        
         if (this.resultsCounter) {
             this.resultsCounter.style.display = 'none';
         }
-        this.reattachEventListeners();
         
-        // Réinitialiser le carrousel après avoir restauré le contenu original
         setTimeout(() => {
             if (window.carousels && window.carousels.length > 0) {
                 window.carousels.forEach(carousel => {
@@ -193,20 +190,8 @@ class MembreSearch {
             this.loadingIndicator.style.display = 'none';
         }
     }
-
-    reattachEventListeners() {
-        // Réattacher les écouteurs d'événements pour les boutons de suppression
-        document.querySelectorAll('.btn-suppr').forEach((btn) => {
-            btn.addEventListener('click', function() {
-                if(confirm('Voulez-vous vraiment supprimer ce membre ?')) {
-                    window.location.href = '/membre/delete/' + this.dataset.id;
-                }
-            });
-        });
-    }
 }
 
-// Initialisation lorsque le DOM est chargé
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOM chargé - initialisation recherche membres');
     new MembreSearch();

@@ -2,14 +2,14 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Nouvel emprunt</title>
+    <title>Nouvelle réservation</title>
     <link rel="stylesheet" href="/assets/css/style.css">
     <link rel="stylesheet" href="/assets/css/forms.css">
     <link rel="stylesheet" href="/assets/css/autocomplete.css">
 </head>
 <body>
     <nav class="navbar">
-        <h1>Bibliothèque - Nouvel emprunt</h1>
+        <h1>Bibliothèque - Nouvelle réservation</h1>
         <div class="nav-links">
             <a href="/dashboard">📊 Dashboard</a>
             <a href="/livre/list">📚 Livres</a>
@@ -23,62 +23,65 @@
     
     <div class="container">
         <div class="form-container">
-            <h1>Nouvel emprunt</h1>
+            <h1>Réserver un livre</h1>
+            
             <!-- <div class="info-message">
                 <strong>Information :</strong> 
                 <ul>
-                    <li>Chaque membre peut emprunter jusqu'à 3 livres simultanément</li>
-                    <li>Vous pouvez sélectionner plusieurs livres en une seule fois</li>
-                    <li>Les membres ayant déjà 3 emprunts ne peuvent pas emprunter de nouveaux livres</li>
+                    <li>Seuls les livres actuellement empruntés peuvent être réservés</li>
+                    <li>Un membre ne peut réserver qu'un exemplaire de chaque livre</li>
+                    <li>Les réservations sont honorées automatiquement par ordre d'arrivée</li>
                 </ul>
-            </div> -->
-            
+            </div>
+             -->
             <!-- {% if error %}
             <div class="error-message">
                 {{ error }}
             </div>
             {% endif %} -->
             
-            <form method="post" action="/emprunt/emprunter" id="emprunt-form">
+            <form method="post" action="/reservation/reserver" id="reservation-form">
                 <input type="hidden" name="id_membre" id="id_membre" required>
-                <div id="livres-ids-container"></div>
+                <input type="hidden" name="id_livre" id="id_livre" required>
                 
                 <div class="form-group">
                     <label for="search_membre">Rechercher un membre</label>
                     <div class="autocomplete">
-                        <input type="text" id="search_membre" placeholder="Commencez à taper le nom..." class="search-input" autocomplete="off">
+                        <input type="text" id="search_membre" placeholder="Commencez à taper le nom d'un membre..." class="search-input" autocomplete="off">
                         <div id="membre-autocomplete-list" class="autocomplete-items"></div>
                     </div>
                     <div id="selected-membre" class="selected-item hidden">
-                        <strong>Membre sélectionné:</strong> <span id="membre-nom"></span> <span id="membre-prenom"></span> (<span id="membre-email"></span>)
-                        <span id="membre-emprunts"></span>
+                        <strong>Membre sélectionné:</strong> 
+                        <span id="membre-nom"></span> 
+                        <span id="membre-prenom"></span> 
+                        (<span id="membre-email"></span>)
                         <button type="button" onclick="clearSelection('membre')" class="clear-btn">×</button>
                     </div>
                 </div>
                 
                 <div class="form-group">
-                    <label for="search_livre">Rechercher des livres</label>
+                    <label for="search_livre">Rechercher un livre à réserver</label>
                     <div class="autocomplete">
-                        <input type="text" id="search_livre" placeholder="Commencez à taper le titre..." class="search-input" autocomplete="off">
+                        <input type="text" id="search_livre" placeholder="Commencez à taper le titre d'un livre..." class="search-input" autocomplete="off">
                         <div id="livre-autocomplete-list" class="autocomplete-items"></div>
                     </div>
-                    <div id="selected-livres" class="selected-items-container">
-                        <strong>Livres sélectionnés:</strong>
-                        <div id="livres-list" class="livres-list"></div>
-                        <div class="livres-count">
-                            <span id="livres-count">0</span>/3 livres sélectionnés
-                        </div>
+                    <div id="selected-livre" class="selected-item hidden">
+                        <strong>Livre sélectionné:</strong> 
+                        <span id="livre-titre"></span> - 
+                        <span id="livre-auteur"></span>
+                        <span id="livre-statut"></span>
+                        <button type="button" onclick="clearSelection('livre')" class="clear-btn">×</button>
                     </div>
                 </div>
                 
                 <div class="form-actions">
-                    <a href="/emprunt/list" class="btn">Retour</a>
-                    <input type="submit" value="Emprunter les livres sélectionnés" class="btn btn-primary" id="submit-btn" disabled>
+                    <a href="/reservation/list" class="btn">Retour</a>
+                    <input type="submit" value="Réserver le livre" class="btn btn-primary" id="submit-btn" disabled>
                 </div>
             </form>
         </div>
     </div>
 
-    <script src="/assets/js/autocomplete.js"></script>
+    <script src="/assets/js/reservation_autocomplete.js"></script>
 </body>
 </html>

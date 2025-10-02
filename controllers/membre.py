@@ -27,6 +27,7 @@ class MembreController(object):
         list_membre = ""
         
         for i, membre in enumerate(membres):
+            # CORRECTION : Utiliser des liens au lieu de boutons avec data-id
             list_membre += f"""
             <div class="carousel-item">
                 <div class="item-card">
@@ -35,7 +36,7 @@ class MembreController(object):
                     <p><strong>Email:</strong> {membre['email']}</p>
                     <div class="item-actions">
                         <a href="/membre/update/{membre['id_membres']}" class="btn btn-primary">Modifier</a>
-                        <button class="btn btn-danger btn-suppr" data-id="{membre['id_membres']}">Supprimer</button>
+                        <a href="/membre/delete/{membre['id_membres']}" class="btn btn-danger">Supprimer</a>
                     </div>
                 </div>
             </div>

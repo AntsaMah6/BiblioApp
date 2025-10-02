@@ -165,7 +165,7 @@
 }
 
 /* Message d'information */
-.info-message {
+/* .info-message {
     background: #d1ecf1;
     border: 1px solid #bee5eb;
     color: #0c5460;
@@ -173,7 +173,7 @@
     border-radius: 4px;
     margin-bottom: 1rem;
     font-size: 0.9rem;
-}
+} */
 
 /* Styles pour la sélection multiple */
 .selected-items-container {

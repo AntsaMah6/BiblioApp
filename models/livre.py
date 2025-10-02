@@ -28,7 +28,7 @@ class Livre(Model):
 
     @classmethod
     def get_livres_empruntes(cls):
-        """Récupérer tous les livres empruntés"""
+        """Récupérer tous les livres empruntés avec leurs informations d'emprunt"""
         from models.emprunt import Emprunt
         
         emprunts = Emprunt.get_emprunts_actifs()
@@ -37,7 +37,11 @@ class Livre(Model):
         for emprunt in emprunts:
             livre = cls.getById(emprunt['id_livres'])
             if livre:
-                livre['emprunt'] = emprunt
+                # Ajouter les informations d'emprunt au livre
+                livre['emprunt'] = {
+                    'date_retour_prevue': emprunt['date_retour_prevue'],
+                    'id_emprunts': emprunt['id_emprunts']
+                }
                 livres_empruntes.append(livre)
         
         return livres_empruntes

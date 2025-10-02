@@ -2,7 +2,7 @@ from models.auth import Auth
 import urllib.parse
 import time
 import secrets
-from session_manager import sessions  # Note: set_session et delete_session ne sont pas définis, on utilise directement sessions
+from session_manager import sessions
 
 class AuthController(object):
     @staticmethod
@@ -11,20 +11,26 @@ class AuthController(object):
             html = f.read()
         if dico:
             for key, value in dico.items():
-                placeholder = "{{ " + str(key) + " }}"  # Correction: enlevé le double {
-                html = html.replace(placeholder, str(value))
+                # Remplacer les placeholders spécifiques
+                if key == "error_message":
+                    error_html = f'<div class="error-message">{value}</div>'
+                    html = html.replace("<!-- ERROR_PLACEHOLDER -->", error_html)
+                else:
+                    placeholder = "{{ " + str(key) + " }}"
+                    html = html.replace(placeholder, str(value))
         await send({
             'type': 'http.response.start',
             'status': 200,
-            'headers': [(b'content-type', b'text/html; charset=utf-8')]  # Correction: ajouté charset=utf-8
+            'headers': [(b'content-type', b'text/html; charset=utf-8')]
         })
         await send({
             'type': 'http.response.body',
-            'body': html.encode('utf-8')  # Correction: encodage explicite en utf-8
+            'body': html.encode('utf-8')
         })
 
     @staticmethod
     async def login_page(scope, receive, send):
+        # Afficher la page de login sans message d'erreur
         await __class__.__load(send, "views/auth/login.html")
 
     @staticmethod
@@ -51,8 +57,9 @@ class AuthController(object):
             })
             await send({'type': 'http.response.body', 'body': b''})
         else:
-            error_html = "<p style='color:red'>Identifiants invalides</p>"
-            await __class__.__load(send, "views/auth/login.html", {"error_message": error_html})
+            # Message d'erreur simple
+            error_message = "Identifiants invalides. Veuillez réessayer."
+            await __class__.__load(send, "views/auth/login.html", {"error_message": error_message})
 
     @staticmethod
     async def logout(scope, receive, send):
